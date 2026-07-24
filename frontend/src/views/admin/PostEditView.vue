@@ -2,7 +2,7 @@
 import { computed, onMounted, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import AdminShell from "../../components/AdminShell.vue";
-import MarkdownRender from "../../components/MarkdownRender.vue";
+import MarkdownEditor from "../../components/MarkdownEditor.vue";
 import { api, type PostInput } from "../../api";
 
 const route = useRoute();
@@ -22,7 +22,6 @@ const form = reactive({
     published: false,
 });
 const tagsText = ref("");
-const showPreview = ref(false);
 const loading = ref(false);
 const error = ref("");
 
@@ -134,25 +133,9 @@ onMounted(load);
 
             <div class="content-head">
                 <span class="field-title">正文（Markdown）</span>
-                <button
-                    class="toggle"
-                    type="button"
-                    @click="showPreview = !showPreview"
-                >
-                    {{ showPreview ? "编辑" : "预览" }}
-                </button>
             </div>
 
-            <textarea
-                v-if="!showPreview"
-                v-model="form.content"
-                class="field content-area font-mono"
-                rows="20"
-                placeholder="# 支持 LaTeX $E=mc^2$、mermaid、代码高亮…"
-            ></textarea>
-            <div v-else class="preview">
-                <MarkdownRender :source="form.content" />
-            </div>
+            <MarkdownEditor v-model="form.content" />
 
             <p v-if="error" class="error">{{ error }}</p>
 
@@ -238,41 +221,6 @@ onMounted(load);
 .field-title {
     font-size: 0.9rem;
     color: var(--text-secondary);
-}
-
-.toggle {
-    padding: 0.7vh 1.6vh;
-    border: 1px solid var(--border-secondary);
-    background: var(--bg-primary);
-    color: var(--text-secondary);
-    font-family: inherit;
-    font-size: 0.88rem;
-    cursor: pointer;
-    transition:
-        border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-        color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.toggle:hover {
-    border-color: var(--accent);
-    color: var(--text-primary);
-}
-
-.content-area {
-    line-height: 1.7;
-    tab-size: 4;
-}
-
-.font-mono {
-    font-family: "Barlow Condensed", ui-monospace, monospace;
-    font-size: 1rem;
-}
-
-.preview {
-    min-height: 40vh;
-    padding: 2.5vh;
-    border: 1px solid var(--border-secondary);
-    background: var(--bg-secondary);
 }
 
 .error {
