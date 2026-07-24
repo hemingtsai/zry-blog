@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: zry-blog-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: zryblog
+      POSTGRES_PASSWORD: zryblog
+      POSTGRES_DB: zryblog
+    ports:
+      - "5432:5432"
+    volumes:
+      - zry_blog_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zryblog"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  zry_blog_pgdata:
