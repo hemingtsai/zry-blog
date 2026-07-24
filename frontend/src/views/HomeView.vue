@@ -32,7 +32,8 @@ function formatDate(iso: string): string {
 </script>
 
 <template>
-    <Hero />
+    <div class="home">
+        <Hero />
 
     <Section title="关于" subtitle="About">
         <p class="prose">
@@ -107,9 +108,10 @@ function formatDate(iso: string): string {
         </div>
     </Section>
 
-    <Section title="联系我" subtitle="Contact">
-        <ContactCards :contacts="contacts" />
-    </Section>
+        <Section title="联系我" subtitle="Contact">
+            <ContactCards :contacts="contacts" />
+        </Section>
+    </div>
 </template>
 
 <style scoped>
