@@ -24,15 +24,17 @@ const form = reactive({
 const tagsText = ref("");
 const loading = ref(false);
 const error = ref("");
+// 待内容就绪后再挂载编辑器，避免 Vditor 初始化与异步加载的竞态
+const editorReady = ref(false);
 
 async function load() {
-    if (!isEdit.value) return;
+    if (!isEdit.value) {
+        editorReady.value = true;
+        return;
+    }
     loading.value = true;
     try {
-        // 后台列表已带 content，直接取列表匹配可行；这里走公开接口需 slug，故用列表
-        const res = await api.adminPosts({ page: 1, size: 100 });
-        const post = res.items.find((p) => p.id === editId.value);
-        if (!post) throw new Error("文章不存在。");
+        const post = await api.adminPost(editId.value as number);
         form.title = post.title;
         form.slug = post.slug;
         form.summary = post.summary;
@@ -43,6 +45,7 @@ async function load() {
         error.value = e instanceof Error ? e.message : "加载失败。";
     } finally {
         loading.value = false;
+        editorReady.value = true;
     }
 }
 
@@ -135,7 +138,8 @@ onMounted(load);
                 <span class="field-title">正文（Markdown）</span>
             </div>
 
-            <MarkdownEditor v-model="form.content" />
+            <MarkdownEditor v-if="editorReady" v-model="form.content" />
+            <p v-else class="loading-hint">加载中…</p>
 
             <p v-if="error" class="error">{{ error }}</p>
 
@@ -221,6 +225,12 @@ onMounted(load);
 .field-title {
     font-size: 0.9rem;
     color: var(--text-secondary);
+}
+
+.loading-hint {
+    padding: 4vh 0;
+    font-size: 0.95rem;
+    color: var(--text-tertiary);
 }
 
 .error {

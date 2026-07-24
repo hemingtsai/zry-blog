@@ -124,6 +124,9 @@ export const api = {
         const qs = q.toString();
         return request<Paginated<Post>>(`/admin/posts${qs ? `?${qs}` : ""}`);
     },
+    adminPost(id: number) {
+        return request<Post>(`/admin/posts/${id}`);
+    },
     createPost(input: PostInput) {
         return request<Post>("/admin/posts", {
             method: "POST",
