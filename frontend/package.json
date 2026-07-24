@@ -1,0 +1,38 @@
+{
+    "name": "hemingtsai-homepage",
+    "private": true,
+    "version": "0.1.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vue-tsc --noEmit -p tsconfig.json && vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@fontsource-variable/noto-serif-sc": "^5.1.1",
+        "@fontsource/barlow-condensed": "^5.1.1",
+        "@iconify/vue": "^4.3.0",
+        "dompurify": "^3.4.12",
+        "highlight.js": "^11.11.1",
+        "katex": "^0.18.1",
+        "markdown-it": "^14.3.0",
+        "markdown-it-anchor": "^9.2.1",
+        "markdown-it-katex": "^2.0.3",
+        "mermaid": "^11.16.0",
+        "three": "^0.185.1",
+        "vue": "^3.5.13",
+        "vue-router": "^5.2.0"
+    },
+    "devDependencies": {
+        "@types/three": "^0.185.1",
+        "@vitejs/plugin-vue": "^5.2.1",
+        "typescript": "~5.7.2",
+        "vite": "^6.0.5",
+        "vue-tsc": "^2.2.0"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "esbuild"
+        ]
+    }
+}
