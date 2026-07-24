@@ -19,7 +19,7 @@ function contentTheme(): "dark" | "light" {
 onMounted(() => {
     if (!el.value) return;
     vditor = new Vditor(el.value, {
-        value: model.value,
+        value: model.value ?? "",
         theme: isDark.value ? "dark" : "classic",
         mode: "ir",
         minHeight: 420,
@@ -56,12 +56,14 @@ onMounted(() => {
         ],
         toolbarConfig: { pin: true },
         input(value) {
-            model.value = value;
+            // Vditor 在空内容/初始化时可能回传 undefined，兜底为空串
+            model.value = value ?? "";
         },
         after() {
             ready = true;
-            if (vditor && model.value !== vditor.getValue()) {
-                vditor.setValue(model.value);
+            const current = model.value ?? "";
+            if (vditor && current !== vditor.getValue()) {
+                vditor.setValue(current);
             }
         },
     });
@@ -69,8 +71,9 @@ onMounted(() => {
 
 // 外部数据变更（如编辑态异步加载）时同步进编辑器
 watch(model, (value) => {
-    if (ready && vditor && value !== vditor.getValue()) {
-        vditor.setValue(value);
+    const next = value ?? "";
+    if (ready && vditor && next !== vditor.getValue()) {
+        vditor.setValue(next);
     }
 });
 
