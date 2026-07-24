@@ -88,6 +88,18 @@ def admin_list_posts(
     )
 
 
+@router.get("/admin/posts/{post_id}", response_model=PostSchema)
+def admin_get_post(
+    post_id: int,
+    db: Session = Depends(get_db),
+    _: MeResponse = Depends(get_current_admin),
+) -> PostSchema:
+    post = db.get(Post, post_id)
+    if post is None:
+        raise HTTPException(status_code=404, detail="Post not found")
+    return PostSchema.model_validate(post)
+
+
 @router.post("/admin/posts", response_model=PostSchema, status_code=status.HTTP_201_CREATED)
 def create_post(
     payload: PostCreate,

@@ -31,6 +31,7 @@ Post 对象:
 
 后台（需鉴权）:
 - `GET /api/admin/posts?page=&size=` → 所有文章(含草稿) `{items, total, page, size}`
+- `GET /api/admin/posts/{id}` → 单篇(含 content，含草稿)
 - `POST /api/admin/posts` body `{title, slug?, summary, content, tags, published}` → Post
 - `PUT /api/admin/posts/{id}` → Post
 - `DELETE /api/admin/posts/{id}` → 204
